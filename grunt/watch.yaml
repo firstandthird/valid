@@ -1,0 +1,16 @@
+scripts:
+  files: '<%= jshint.main %>'
+  tasks: 'scripts'
+  options: 
+    livereload: true
+example:
+  files:
+    - 'example/*'
+  options:
+    livereload: true
+grunt:
+  files:
+    - 'Gruntfile.js'
+    - 'grunt/*.yaml'
+    - 'test/index.html'
+  tasks: 'default'

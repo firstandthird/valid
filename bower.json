@@ -1,0 +1,21 @@
+{
+  "name": "valid",
+  "description": "Javascript library to validate input fields in a form",
+  "version": "0.1.0",
+  "homepage": "https://github.com/firstandthird/valid",
+  "license": "MIT",
+  "copyright": "First + Third",
+  "main": "dist/valid.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "assert": "*"
+  },
+  "ignore": [
+    "test",
+    "example",
+    "lib",
+    "Gruntfile.js",
+    "package.json"
+  ]
+}
