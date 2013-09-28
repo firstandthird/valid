@@ -15,7 +15,27 @@ Javascript library to validate input fields in a form
 
 ##Usage
 
-Docs coming soon
+HTML:
+```html
+<form>
+	<label>Name: </label><input name="name" type="text" data-required />
+	<label>Email: </label><input type="text" data-regex="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" />
+</form>
+```
+
+JS:
+```javascript
+var errors = valid($('form'));
+
+if (!errors) {
+	console.log('no errors');
+} else {
+	console.log(errors);
+	// [{ type: 'required', el: <input>, error: 'required' }, { type: 'regex', el: <input>, error: 'invalid' }]
+}
+
+```
+
 
 ##Development
 
