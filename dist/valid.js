@@ -1,3 +1,10 @@
+/*!
+ * valid - Javascript library to validate input fields in a form
+ * v0.1.0
+ * https://github.com/firstandthird/valid
+ * copyright First + Third 2013
+ * MIT License
+*/
 //valid.js
 
 var valid = function( el ) {
