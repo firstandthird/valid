@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>valid Tests</title>
-  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  <link rel="stylesheet" href="../node_modules/grunt-mocha/node_modules/mocha/mocha.css" />
   <script src="../bower_components/assert/assert.js"></script>
   <script src="../node_modules/grunt-mocha/node_modules/mocha/mocha.js"></script>
   <!--<script src="../bower_components/blanket/dist/qunit/blanket.min.js" data-cover-adapter="../components/blanket/src/adapters/mocha-blanket.js"></script>-->
@@ -12,8 +12,19 @@
 <body>
   <div id="mocha"></div>
   <div id="fixture" style="display: none">
+    <form id="form1">
+      <input type="text" class="f1i1" data-required />
+    </form>
+    <form id="form2">
+      <input type="text" data-pattern="\d" />
+    </form>
+    <form id="form3">
+      <input type="text" class="f3i1" data-required />
+      <input type="text" class="f3i2" data-required />
+    </form>
 
   </div>
+  <script src="../bower_components/jquery/jquery.js" data-cover></script>
   <script src="../dist/valid.js" data-cover></script>
   <script src="valid.test.js"></script>
   <script>
