@@ -34,7 +34,7 @@ suite('valid', function() {
     });
   });
 
-  suite('regex', function() {
+  suite('pattern', function() {
 
     var form;
     setup(function() {
@@ -48,7 +48,7 @@ suite('valid', function() {
       assert.equal(errors instanceof Array, true);
       assert.equal(errors.length, 1);
       assert.equal(typeof errors[0].element, "object");
-      assert.equal(errors[0].type, 'regex');
+      assert.equal(errors[0].type, 'pattern');
 
     });
 
@@ -69,7 +69,7 @@ suite('valid', function() {
       assert.equal(errors instanceof Array, true);
       assert.equal(errors.length, 1);
       assert.equal(typeof errors[0].element, "object");
-      assert.equal(errors[0].type, 'regex');
+      assert.equal(errors[0].type, 'pattern');
 
     });
 
