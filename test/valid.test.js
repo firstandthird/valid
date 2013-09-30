@@ -1,6 +1,11 @@
 
 suite('valid', function() {
 
+  suite('init', function() {
+    test('pass in native form element');
+    test('pass in jquery form element');
+  });
+
   suite('required', function() {
 
     var form;
