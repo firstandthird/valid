@@ -18,8 +18,8 @@ Javascript library to validate input fields in a form
 HTML:
 ```html
 <form>
-	<label>Name: </label><input name="name" type="text" data-required />
-	<label>Email: </label><input type="text" data-regex="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" />
+  <label>Name: </label><input name="name" type="text" data-valid-required />
+  <label>Email: </label><input type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" />
 </form>
 ```
 
@@ -27,11 +27,12 @@ JS:
 ```javascript
 var errors = valid($('form'));
 
-if (!errors) {
-	console.log('no errors');
+if (errors) {
+  console.log(errors);
+  // format:
+  // [{ element: <input>, type: 'required' }, { element: <input>, type: 'pattern' }]
 } else {
-	console.log(errors);
-	// [{ type: 'required', el: <input>, error: 'required' }, { type: 'regex', el: <input>, error: 'invalid' }]
+  console.log('no errors');
 }
 
 ```
