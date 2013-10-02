@@ -22,7 +22,6 @@ suite('valid', function() {
       assert.equal(typeof errors[0].element, "object");
       assert.equal(errors[0].element.className, "f1i1");
       assert.equal(errors[0].type, 'required');
-      assert.equal(errors[0].error, 'This is required');
     });
 
     test('input - filled', function() {
@@ -92,12 +91,10 @@ suite('valid', function() {
       assert.equal(typeof errors[0].element, "object");
       assert.equal(errors[0].element.className, "f3i1");
       assert.equal(errors[0].type, 'required');
-      assert.equal(errors[0].error, 'This is required');
 
       assert.equal(typeof errors[1].element, "object");
       assert.equal(errors[1].element.className, "f3i2");
       assert.equal(errors[1].type, 'required');
-      assert.equal(errors[1].error, 'This is required');
     });
 
     test('one valid', function() {
@@ -111,7 +108,6 @@ suite('valid', function() {
       assert.equal(typeof errors[0].element, "object");
       assert.equal(errors[0].element.className, "f3i2");
       assert.equal(errors[0].type, 'required');
-      assert.equal(errors[0].error, 'This is required');
     });
 
 
