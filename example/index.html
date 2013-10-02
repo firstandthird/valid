@@ -8,20 +8,20 @@
 
     <form action="" method="post">
       <label>Name: </label>
-      <input name="name" type="text" data-required />
+      <input name="name" type="text" data-valid-required />
       <label>Email: </label>
-      <input type="text" data-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="joe@example.com" />
+      <input type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
     </form>
 
     <script src="../bower_components/jquery/jquery.js"></script>
     <script src="../lib/valid.js"></script>
     <script>
-        var errors = valid( $( 'form' ) );
+        var errors = valid($('form'));
 
-        if ( errors ) {
+        if (errors) {
             console.log( errors );
         } else {
-            console.log( 'no errors' );
+            console.log('no errors');
         }
     </script>
   </body>
