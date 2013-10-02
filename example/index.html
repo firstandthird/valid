@@ -3,6 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <title>valid example</title>
+    <style>
+      label {
+        display: block;
+      }
+      input {
+        width: 98%;
+        padding: 5px 10px;
+      }
+    </style>
   </head>
   <body>
 
@@ -10,8 +19,11 @@
       <label>Name: </label>
       <input name="name" type="text" data-valid-required />
       <label>Email: </label>
-      <input type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
       <input type="text" data-valid-email name="email" value="" />
+      <label>Url: </label>
+      <input type="text" data-valid-url name="email" value="http://www.example.com/" />
+      <label>Input: </label>
+      <input type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
     </form>
 
     <script src="../bower_components/jquery/jquery.js"></script>
