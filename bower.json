@@ -10,7 +10,8 @@
     "jquery": "*"
   },
   "devDependencies": {
-    "assert": "*"
+    "assert": "*",
+    "blanket": "*"
   },
   "ignore": [
     "test",
