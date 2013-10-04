@@ -7,11 +7,12 @@
   <body>
 
     <form action="" method="post">
-      <label>Name: </label>
-      <input name="name" type="text" data-valid-required />
-      <label>Email: </label>
-      <input type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
-      <input type="text" data-valid-email name="email" value="" />
+      <label for="name">Name: </label>
+      <input id="name" name="name" type="text" data-valid-required />
+      <label for="email">Email: </label>
+      <input id="email" type="text" data-valid-email name="email" value="" />
+      <label for="pattern">Text: </label>
+      <input id="pattern" type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="pattern" value="" />
     </form>
 
     <script src="../bower_components/jquery/jquery.js"></script>
