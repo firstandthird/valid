@@ -36,7 +36,9 @@ suite('valid', function() {
     test('custom validator is function', function() {
       var test = new valid($('form'), {
         phone: function(input) {
-
+          return valid.validate(input, function(text) {
+            return text.length > 0;
+          }, 'phone');
         }
       });
 
@@ -128,6 +130,78 @@ suite('valid', function() {
         var result = valid.passwordConfirm('wqR2d4cnCveB', 'doesntwork');
         assert.ok(!result.valid);
       });
+    });
+  });
+
+  suite('form runner', function() {
+    test('should return true on valid form', function() {
+      var result = new valid($('#valid'));
+      console.log(result);
+      assert.ok(result.check());
+    });
+
+    test('should return array of invalid inputs on invalid form', function() {
+      var result = new valid($('#invalid'), {
+        bio: function(input) {
+          return valid.validate(input, function(text) {
+            return text.length > 0;
+          }, 'bio');
+        }
+      });
+
+      assert.equal(result.check().length, 9);
+    });
+
+    test('should return element of failed item', function() {
+      var result = new valid($('#invalid'), {
+        bio: function(input) {
+          return valid.validate(input, function(text) {
+            return text.length > 0;
+          }, 'bio');
+        }
+      });
+
+      assert.ok(result.check()[0].element);
+    });
+
+    test('should return validation type of failed item', function() {
+      var result = new valid($('#invalid'), {
+        bio: function(input) {
+          return valid.validate(input, function(text) {
+            return text.length > 0;
+          }, 'bio');
+        }
+      });
+
+      assert.ok(result.check()[0].type);
+    });
+
+    test('should trigger invalid when invalid', function(done) {
+      var form = $('#invalid');
+      var result = new valid(form);
+
+      form.on('invalid', function(input, data) {
+        assert.ok(input);
+        assert.ok(data);
+        form.unbind('invalid');
+        done();
+      });
+
+      result.check();
+    });
+
+    test('should trigger valid when valid', function(done) {
+      var form = $('#valid');
+      var result = new valid(form);
+
+      form.on('valid', function(input, data) {
+        assert.ok(input);
+        assert.ok(data);
+        form.unbind('valid');
+        done();
+      });
+
+      result.check();
     });
   });
 

@@ -16,15 +16,17 @@
 <body>
   <div id="mocha"></div>
   <div id="fixture" style="display: none">
-    <form id="form1">
-      <input type="text" class="f1i1" data-valid-required />
+    <form id="invalid">
+      <input type="text" id="name" placeholder="Name" required /><br>
+      <input type="email" id="email" placeholder="Email" required /><br>
+      <input type="text" id="other-email" placeholder="Other Email" data-valid-email />
+      <input type="password" id="password" placeholder="Password" data-valid-password required /><br>
+      <input type="password" id="password-confirm" placeholder="Confirm Password" data-valid-password-confirm="password" required /><br>
+      <textarea id="bio" placeholder="Bio" data-valid-bio required></textarea><br>
+      <button type="submit">Submit</button>
     </form>
-    <form id="form2">
-      <input type="text" data-valid-pattern="\d" />
-    </form>
-    <form id="form3">
-      <input type="text" class="f3i1" data-valid-required />
-      <input type="text" class="f3i2" data-valid-required />
+    <form id="valid">
+      <input type="text" value="name" required />
     </form>
     <form id="validate">
       <input type="text" value="Test" />
