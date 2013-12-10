@@ -130,6 +130,11 @@ suite('valid', function() {
         var result = valid.passwordConfirm('wqR2d4cnCveB', 'doesntwork');
         assert.ok(!result.valid);
       });
+      test('input with data-valid-password-confirm should match passed input', function() {
+        var input = $('#password-confirm');
+
+        assert.ok(valid.passwordConfirm(input).valid);
+      });
     });
   });
 
@@ -148,7 +153,7 @@ suite('valid', function() {
         }
       });
 
-      assert.equal(result.check().length, 9);
+      assert.equal(result.check().length, 8);
     });
 
     test('should return element of failed item', function() {
