@@ -262,6 +262,20 @@ suite('valid', function() {
 
       form.find('input').first().trigger('input');
     });
+
+    test('submit', function(done, data) {
+      var form = $('#invalid');
+      var result = new valid(form);
+
+      form.on('invalid', function(input, data) {
+        assert.ok(input);
+        assert.ok(data);
+        form.unbind('invalid');
+        done();
+      });
+
+      form.trigger('submit');
+    });
   });
 
 });

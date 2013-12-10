@@ -17,25 +17,43 @@
 
     <form action="" method="post">
       <label>Name: </label>
-      <input name="name" type="text" data-valid-required />
+      <input name="name" type="text" required />
       <label>Email: </label>
       <input type="text" data-valid-email name="email" value="" />
       <label>Url: </label>
-      <input type="text" data-valid-url name="email" value="http://www.example.com/" />
-      <label>Input: </label>
-      <input type="text" data-valid-pattern="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
+      <input type="text" data-valid-url name="email" value="ftp://www.example.com/" />
+      <label>Email Custom: </label>
+      <input type="text" data-valid-validate="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
     </form>
 
     <script src="../bower_components/jquery/jquery.js"></script>
     <script src="../lib/valid.js"></script>
     <script>
-        var errors = valid($('form'));
+      var form = $('form');
 
-        if (errors) {
-            console.log( errors );
-        } else {
-            console.log('no errors');
+      var validator = new valid(form, {
+        url: function(input) {
+          return valid.validate(input, function(text) {
+            return text.indexOf('htt') === 0;
+          }, 'url');
         }
+      });
+
+      var errors = validator.check();
+
+      if (errors) {
+        console.log( errors );
+      } else {
+        console.log('no errors');
+      }
+
+      form.on('pass passing fail failing', function(input, data) {
+        console.log(input, data);
+      });
+
+      form.on('valid invalid', function(input, data) {
+        console.log(input, data);
+      });
     </script>
   </body>
 </html>
