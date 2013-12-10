@@ -136,7 +136,6 @@ suite('valid', function() {
   suite('form runner', function() {
     test('should return true on valid form', function() {
       var result = new valid($('#valid'));
-      console.log(result);
       assert.ok(result.check());
     });
 
@@ -175,8 +174,10 @@ suite('valid', function() {
 
       assert.ok(result.check()[0].type);
     });
+  });
 
-    test('should trigger invalid when invalid', function(done) {
+  suite('events', function() {
+    test('invalid', function(done) {
       var form = $('#invalid');
       var result = new valid(form);
 
@@ -190,18 +191,71 @@ suite('valid', function() {
       result.check();
     });
 
-    test('should trigger valid when valid', function(done) {
+    test('valid', function(done) {
       var form = $('#valid');
       var result = new valid(form);
 
-      form.on('valid', function(input, data) {
-        assert.ok(input);
-        assert.ok(data);
+      form.on('valid', function() {
+        assert.ok(true);
         form.unbind('valid');
         done();
       });
 
       result.check();
+    });
+
+    test('pass', function(done) {
+      var form = $('#valid');
+      var result = new valid(form);
+
+      form.on('pass', function(input) {
+        assert.ok(input);
+        form.unbind('pass');
+        done();
+      });
+
+      form.find('input').first().trigger('blur');
+    });
+
+    test('fail', function(done) {
+      var form = $('#invalid');
+      var result = new valid(form);
+
+      form.on('fail', function(input, data) {
+        assert.ok(input);
+        assert.ok(data);
+        form.unbind('fail');
+        done();
+      });
+
+      form.find('input').first().trigger('blur');
+    });
+
+    test('passing', function(done) {
+      var form = $('#valid');
+      var result = new valid(form);
+
+      form.on('passing', function(input) {
+        assert.ok(input);
+        form.unbind('passing');
+        done();
+      });
+
+      form.find('input').first().trigger('input');
+    });
+
+    test('failing', function(done, data) {
+      var form = $('#invalid');
+      var result = new valid(form);
+
+      form.on('failing', function(input, data) {
+        assert.ok(input);
+        assert.ok(data);
+        form.unbind('failing');
+        done();
+      });
+
+      form.find('input').first().trigger('input');
     });
   });
 
