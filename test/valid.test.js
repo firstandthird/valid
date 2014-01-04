@@ -12,7 +12,7 @@ suite('valid', function() {
     });
 
     test('validate function exists', function() {
-      assert.ok(typeof valid.validate === 'function');
+      assert.ok(typeof valid.custom === 'function');
     });
 
     test('required function exists', function() {
@@ -36,48 +36,50 @@ suite('valid', function() {
     test('custom validator is function', function() {
       var test = new valid($('form'), {
         phone: function(input) {
-          return valid.validate(input, function(text) {
+          return valid.custom(input, function(text) {
             return text.length > 0;
           }, 'phone');
         }
       });
 
-      assert.ok(typeof valid.phone === 'function');
+      console.log(validations);
+
+      assert.ok(typeof validations.phone === 'function');
     });
   });
 
   suite('validations', function() {
     suite('validate', function() {
       test('should validate input with regex', function() {
-        var result = valid.validate($('#validate input'), /Test/);
+        var result = valid.custom($('#validate input'), /Test/);
         assert.ok(result.valid);
       });
       test('should fail input with regex', function() {
-        var result = valid.validate($('#validate input'), /Fail/);
+        var result = valid.custom($('#validate input'), /Fail/);
         assert.ok(!result.valid);
       });
       test('should validate input with function', function() {
-        var result = valid.validate($('#validate input'), function(input) {
+        var result = valid.custom($('#validate input'), function(input) {
           return input === 'Test';
         });
         assert.ok(result.valid);
       });
       test('should fail input with function', function() {
-        var result = valid.validate($('#validate input'), function(input) {
+        var result = valid.custom($('#validate input'), function(input) {
           return input === 'Fail';
         });
         assert.ok(!result.valid);
       });
       test('should validate input with string', function() {
-        var result = valid.validate($('#validate input'), 'Test');
+        var result = valid.custom($('#validate input'), 'Test');
         assert.ok(result.valid);
       });
       test('should fail input with string', function() {
-        var result = valid.validate($('#validate input'), 'Fail');
+        var result = valid.custom($('#validate input'), 'Fail');
         assert.ok(!result.valid);
       });
       test('should validate string with string', function() {
-        var result = valid.validate('Test', 'Test');
+        var result = valid.custom('Test', 'Test');
         assert.ok(result.valid);
       });
     });
@@ -147,7 +149,7 @@ suite('valid', function() {
     test('should return array of invalid inputs on invalid form', function() {
       var result = new valid($('#invalid'), {
         bio: function(input) {
-          return valid.validate(input, function(text) {
+          return valid.custom(input, function(text) {
             return text.length > 0;
           }, 'bio');
         }
@@ -159,7 +161,7 @@ suite('valid', function() {
     test('should return element of failed item', function() {
       var result = new valid($('#invalid'), {
         bio: function(input) {
-          return valid.validate(input, function(text) {
+          return valid.custom(input, function(text) {
             return text.length > 0;
           }, 'bio');
         }
@@ -171,7 +173,7 @@ suite('valid', function() {
     test('should return validation type of failed item', function() {
       var result = new valid($('#invalid'), {
         bio: function(input) {
-          return valid.validate(input, function(text) {
+          return valid.custom(input, function(text) {
             return text.length > 0;
           }, 'bio');
         }

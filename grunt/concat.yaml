@@ -2,6 +2,7 @@ options:
   banner: '<%= meta.banner %>'
 dist:
   src:
+    - 'bower_components/validations/dist/validations.js'
     - 'lib/<%= name %>.js'
   dest: 'dist/<%= name %>.js'
 full:
