@@ -1,88 +1,311 @@
+
 /*!
  * valid - Javascript library to validate input fields in a form
- * v0.1.0
+ * v0.2.0
  * https://github.com/firstandthird/valid
- * copyright First + Third 2013
+ * copyright First + Third 2014
  * MIT License
 */
-var valid = function(el) {
-  // jquery the selector
-  var $el = $(el);
-  // narrow selection to only these validations
-  var $els = $el.find('[data-valid-required], [data-valid-pattern], [data-valid-email]');
-  // storage array to return
-  var arr = [];
+/*!
+ * validations - Utility lib to do string validations
+ * v0.0.4
+ * https://github.com/firstandthird/validations
+ * copyright First + Third 2014
+ * MIT License
+*/
+(function(){
+  var root = this;
 
-  // tests the pattern against the value that is passed
-  // in, returns true if there is a match
-  var getMatch = function( value, pattern ) {
-      var regex = new RegExp(pattern);
-      return regex.test(value);
+  var alphaSize = function(text) {
+    var count = 0;
+    var lower, upper, number, symbol, symbol2;
+    lower = upper = number = symbol = symbol2 = false;
+    var other = '';
+    var i, c;
+
+    for(i = 0, c = text.length; i < c; i++) {
+      if(!lower && /[a-z]/.test(text)) {
+        count += 26;
+        lower = true;
+      } else if(!upper && /[A-Z]/.test(text)) {
+        count += 26;
+        upper = true;
+      } else if(!number && /\d/.test(text)) {
+        count += 10;
+        number = true;
+      } else if(!symbol && '!@#$%^&*()'.indexOf(text) > -1) {
+        count += 10;
+        symbol = true;
+      } else if(!symbol2 && '~`-_=+[]{}\\|;:\'",.<>?/'.indexOf(text) > -1) {
+        count += 22;
+        symbol2 = true;
+      } else if(other.indexOf(text) === -1) {
+        count++;
+        other += text;
+      }
+    }
+
+    return count;
   };
 
-  // check for errors with the passed in element
-  var getError = function(element) {
-    // jquery the selector
-    var $element = $(element);
-    // trim the whitespace on inputs
-    var $value = $.trim($element.val());
-    // set the default error
-    var error = false;
-    // the type; pattern, email, url, or required
-    var type; 
-    // the regex pattern to test
-    var pattern;
+  var validations = function(customValidators) {
+    var validator;
 
-    // test the regex pattern
-    if ($element.data('valid-pattern')) {
-      type = 'pattern';
-      // grab the pattern that is passed in from the view
-      pattern = $element.data('valid-pattern');
-      // test() will return true for a match
-      // want to reverse that so it reads like english
-      // i.e. if there is an error, set error to true
-      error = ! getMatch($element.val(), pattern);
-    }
-    // test the url pattern
-    if ($element.data('valid-url')) {
-        type = 'url';
-        pattern = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-        error = ! getMatch($element.val(), pattern);
-    }
-    // test the email pattern
-    if ($element.data('valid-email') === '') {
-        type = 'email';
-        // this pattern came from a site that specified that
-        // this will match the RFC 5322 spec
-        pattern = /[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-        //run the pattern check with this pattern
-        // needs to return true if there is an error
-        error = ! getMatch($element.val(), pattern);
+    if(typeof customValidators === 'object') {
+      for(validator in customValidators) {
+        if(!validations[validator]) {
+          validations[validator] = customValidators[validator];
+        }
+      }
     }
 
-    // this will check for an empty value
-    // covers the required case
-    if ($element.data('valid-required') === '' && $value.length === 0) {
-      type = 'required';
-      error = true;
-    }
+    return this;
+  };
 
-    if (!error) {
-      return false;
-    }
-
-    return {
-      'element' : $element[0],
-      'type' : type
+  validations.validate = function(input, pattern, type) {
+    var result = {
+      valid: false,
+      type: type || 'validate'
     };
+
+    if(pattern instanceof RegExp) {
+      result.valid = pattern.test(input);
+    } else if(typeof pattern === 'string') {
+      result.valid = pattern === input;
+    } else if(typeof pattern === 'function') {
+      result.valid = pattern(input);
+    }
+
+    return result;
   };
 
-  $.each($els, function() {
-    var $el = $(this);
-    var err = getError($el);
-    if (err) {
-      arr.push(err);
+  validations.required = function(input) {
+    return validations.validate(input, function(text) {
+      return text.length > 0;
+    }, 'required');
+  };
+
+  validations.email = function(input) {
+    return validations.validate(input.toLowerCase(), /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/, 'email');
+  };
+
+  validations.password = function(input, method) {
+    method = method || function(text) {
+      return text.length > 5;
+    };
+
+    return validations.validate(input, method, 'password');
+  };
+
+  validations.passwordConfirm = function(input, confirm) {
+    return validations.validate(input, confirm, 'password-confirm');
+  };
+
+  validations.passwordStrength = function(password, secureThreshold) {
+    if(!password.length) return 0;
+
+    // Sets default threshold to NIST (SP 800-63) recommended 80bit.
+    secureThreshold = secureThreshold || 80;
+
+    var entropy = (password.length * Math.log(alphaSize(password))) / Math.log(2);
+    var bits = Math.round(entropy * 100) / 100;
+
+    if(bits > secureThreshold) bits = secureThreshold;
+
+    return ~~((bits / secureThreshold) * 100);
+  };
+
+  if (typeof exports !== 'undefined') {
+    if (typeof module !== 'undefined' && module.exports) {
+      exports = module.exports = validations;
+    }
+    exports.validations = validations;
+  } else {
+    root.validations = validations;
+  }
+
+
+}());
+
+(function($){
+
+  $.declare('valid', {
+    defaults: {
+      errorClass: 'valid-input-error',
+      validClass: 'valid-input-valid',
+      inputTypes: ['input', 'textarea', 'select'],
+      preventDefault: true
+    },
+    events: {
+      'submit': 'check'
+    },
+    init: function() {
+      var validator;
+      var validators = {};
+      this.results = [];
+
+      //Detects if html5 events are supported.
+      this.supportedInputEvent = (('oninput' in document.createElement('input')) ? 'input' : 'keyup') + '.valid';
+
+      if(typeof this.customValidators === 'object') {
+        for(validator in this.customValidators) {
+          if(validator === 'inputTypes') {
+            this.inputTypes = this.customValidators[validator];
+            continue;
+          }
+
+          if(!validators[validator] && !this[validator]) {
+            validators[validator] = this.customValidators[validator];
+            this[validator] = this.customValidators[validator];
+          }
+        }
+
+        new validations(validators);
+      }
+
+      this.bindEvents();
+    },
+
+    bindEvents: function() {
+      var self = this;
+      var inputs = this.find(this.inputTypes.join());
+
+      inputs.unbind(this.supportedInputEvent + ' blur.valid');
+
+      inputs.bind(this.supportedInputEvent + ' blur.valid', function(event) {
+        var $this = $(this);
+
+        $.each($this[0].attributes, function(i, attr) {
+          var method = '';
+
+          if(attr.name.indexOf('data-valid-') === 0 || attr.name === 'required') {
+            method = $.camelCase(attr.name.replace('data-valid-', ''));
+            var response;
+
+            if(self[method]) {
+              response = self[method].call(self, $this);
+              response.element = $this[0];
+
+              if(!response.valid) {
+                if(event.type === 'blur') {
+                  self.emit('inputFail', [$this, response]);
+                } else {
+                  self.emit('inputFailing', [$this, response]);
+                }
+              } else {
+                if(event.type === 'blur') {
+                  self.emit('inputPass', [$this, response]);
+                } else {
+                  self.emit('inputPassing', [$this, response]);
+                }
+              }
+            }
+          }
+        });
+      });
+    },
+
+    check: function(e) {
+      if(this.preventDefault) {
+        e.preventDefault();
+      }
+
+      var self = this;
+      var passes = false;
+      this.results = [];
+
+      this.find(this.inputTypes.join()).each(function() {
+        var $this = $(this);
+
+        $.each(this.attributes, function(i, attr) {
+          var method = '';
+
+          if(attr.name.indexOf('data-valid-') === 0 || attr.name === 'data-valid-required') {
+            method = $.camelCase(attr.name.replace('data-valid-', ''));
+            var response;
+
+            if(self[method]) {
+              response = self[method].call(self, $this);
+              response.element = $this[0];
+
+              if(!response.valid) {
+                self.results.push(response);
+                self.emit('inputInvalid', [response.element, response]);
+                $this.addClass(self.errorClass).removeClass(self.validClass);
+              } else {
+                self.emit('inputValid', [response.element]);
+                $this.addClass(self.validClass).removeClass(self.errorClass);
+              }
+            }
+          }
+        });
+      });
+
+      passes = this.results.length ? this.results : true;
+
+      if(passes) {
+        this.emit('formValid', [this.el, this.results]);
+      } else {
+        this.emit('formInvalid', [this.el]);
+      }
+    },
+
+    validate: function(input, type) {
+      var text = "";
+      var target;
+
+      if(typeof input === 'object') {
+        text = input.val();
+        target = input.data('valid-validate');
+
+        if(target && target.length > 0) {
+          pattern = target;
+        }
+      } else {
+        text = input;
+      }
+
+      var args = $.makeArray(arguments);
+
+      args[0] = text;
+      args.splice(1, 1);
+
+      if(typeof validations[type] === 'undefined') return false;
+
+      return validations[type].apply(this, args);
+    },
+
+    custom: function(input, pattern) {
+      return this.validate(input, 'validate', pattern);
+    },
+
+    required: function(input) {
+      return this.validate(input, 'required');
+    },
+
+    email: function(input) {
+      return this.validate(input, 'email');
+    },
+
+    password: function(input, method) {
+      return this.validate(input, 'password', method);
+    },
+
+    passwordConfirm: function(input, confirm) {
+      var target;
+
+      if(typeof input === 'object') {
+        target = input.data('valid-password-confirm');
+        if(target && target.length > 0) {
+          confirm = $('#' + target);
+        }
+      }
+
+      if(typeof confirm === 'object') {
+        confirm = confirm.val();
+      }
+
+      return this.validate(input, 'passwordConfirm', confirm);
     }
   });
-  return arr;
-};
+}(jQuery));

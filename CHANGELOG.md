@@ -1,4 +1,17 @@
 
+0.2.0 / 2014-07-11 
+==================
+
+  * Minor updated. Prevents default by default.
+  * Fidelified.
+  * Switched over to use validation lib.
+  * Added submit check.
+  * Added support for password-confirm.
+  * Added events for pass/fail/passing/failing
+  * Added support to run against an entire form.
+  * Added types for password and password-confirm.
+  * V2 API complete.
+
 0.1.0 / 2013-10-04 
 ==================
 
