@@ -15,45 +15,42 @@
   </head>
   <body>
 
-    <form action="" method="post">
+    <form action="#" method="post">
       <label>Name: </label>
-      <input name="name" type="text" required />
+      <input name="name" type="text" />
       <label>Email: </label>
       <input type="text" data-valid-email name="email" value="" />
       <label>Url: </label>
       <input type="text" data-valid-url name="email" value="ftp://www.example.com/" />
       <label>Email Custom: </label>
       <input type="text" data-valid-validate="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
+      <input type="submit" value="submit" />
     </form>
 
-    <script src="../bower_components/jquery/jquery.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/fidel/dist/fidel.js"></script>
     <script src="../dist/valid.js"></script>
     <script>
       var form = $('form');
 
-      var validator = new valid(form, {
-        url: function(input) {
-          return valid.validate(input, function(text) {
-            return text.indexOf('htt') === 0;
-          }, 'url');
+      form.valid({
+        customValidators: {
+          url: function(input) {
+            return this.custom(input, function(text) {
+              return text.indexOf('htt') === 0;
+            }, 'url');
+          }
         }
       });
 
-      var errors = validator.check();
-
-      if (errors) {
-        console.log( errors );
-      } else {
-        console.log('no errors');
-      }
-
-      form.on('pass passing fail failing', function(input, data) {
+      form.on('inputPass inputPassing inputFail inputFailing inputValid inputInvalid formValid formInvalid', function(input, data) {
         console.log(input, data);
       });
 
-      form.on('valid invalid', function(input, data) {
-        console.log(input, data);
+      form.on('submit', function(e) {
+        e.preventDefault();
       });
+
     </script>
   </body>
 </html>

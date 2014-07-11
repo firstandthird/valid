@@ -8,7 +8,8 @@
   "main": "dist/valid.js",
   "dependencies": {
     "jquery": "*",
-    "validations": "git@github.com:firstandthird/validations.git#~0.0.2"
+    "validations": "git@github.com:firstandthird/validations.git#~0.0.2",
+    "fidel": "~2.2.5"
   },
   "devDependencies": {
     "assert": "*",
