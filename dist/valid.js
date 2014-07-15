@@ -211,7 +211,6 @@
       }
 
       var self = this;
-      var passes = false;
       this.results = [];
 
       this.find(this.inputTypes.join()).each(function() {
@@ -241,12 +240,10 @@
         });
       });
 
-      passes = this.results.length ? this.results : true;
-
-      if(passes) {
-        this.emit('formValid', [this.el, this.results]);
+      if(this.results.length) {
+        this.emit('formInvalid', [this.el, this.results]);
       } else {
-        this.emit('formInvalid', [this.el]);
+        this.emit('formValid', [this.el]);
       }
     },
 
