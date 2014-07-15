@@ -114,6 +114,33 @@ suite('valid', function() {
 
       form.find('input').first().trigger('input');
     });
+
+    test('formInvalid', function(done, data) {
+      var form = $('#invalid');
+      form.valid();
+
+      form.on('formInvalid', function(e, input, data) {
+        assert.ok(input);
+        assert.ok(data);
+        form.unbind('formInvalid');
+        done();
+      });
+
+      form.trigger('submit');
+    });
+
+    test('formValid', function(done, data) {
+      var form = $('#valid');
+      form.valid();
+
+      form.on('formValid', function(e, input, data) {
+        assert.ok(input);
+        form.unbind('formValid');
+        done();
+      });
+
+      form.trigger('submit');
+    });
   });
 
 });
