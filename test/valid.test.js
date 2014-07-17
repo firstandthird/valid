@@ -61,33 +61,6 @@ suite('valid', function() {
       form.trigger('submit');
     });
 
-    test('inputPass', function(done) {
-      var form = $('#valid');
-      form.valid();
-
-      form.on('inputPass', function(input) {
-        assert.ok(input);
-        form.unbind('inputPass');
-        done();
-      });
-
-      form.find('input').first().trigger('blur');
-    });
-
-    test('inputFail', function(done) {
-      var form = $('#invalid');
-      form.valid();
-
-      form.on('inputFail', function(input, data) {
-        assert.ok(input);
-        assert.ok(data);
-        form.unbind('inputFail');
-        done();
-      });
-
-      form.find('input').first().trigger('blur');
-    });
-
     test('inputPassing', function(done) {
       var form = $('#valid');
       form.valid();

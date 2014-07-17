@@ -17,11 +17,11 @@
   <div id="mocha"></div>
   <div id="fixture" style="display: none">
     <form id="invalid">
-      <input type="text" id="name" placeholder="Name" required /><br>
-      <input type="email" id="email" placeholder="Email" required /><br>
+      <input type="text" id="name" placeholder="Name" data-valid-required /><br>
+      <input type="email" id="email" placeholder="Email" data-valid-required /><br>
       <input type="text" id="other-email" placeholder="Other Email" data-valid-email />
-      <input type="password" id="password" placeholder="Password" data-valid-password required /><br>
-      <input type="password" id="password-confirm" placeholder="Confirm Password" data-valid-password-confirm="password" required /><br>
+      <input type="password" id="password" placeholder="Password" data-valid-password data-valid-required /><br>
+      <input type="password" id="password-confirm" placeholder="Confirm Password" data-valid-password-confirm="password" data-valid-required /><br>
       <textarea id="bio" placeholder="Bio" data-valid-bio required></textarea><br>
       <button type="submit">Submit</button>
     </form>

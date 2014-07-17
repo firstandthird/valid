@@ -17,13 +17,11 @@
 
     <form action="#" method="post">
       <label>Name: </label>
-      <input name="name" type="text" />
+      <input name="name" type="text" data-valid-required />
       <label>Email: </label>
       <input type="text" data-valid-email name="email" value="" />
       <label>Url: </label>
-      <input type="text" data-valid-url name="email" value="ftp://www.example.com/" />
-      <label>Email Custom: </label>
-      <input type="text" data-valid-validate="[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}" name="email" value="" />
+      <input type="text" data-valid-url name="url" value="ftp://www.example.com/" />
       <input type="submit" value="submit" />
     </form>
 
@@ -43,12 +41,8 @@
         }
       });
 
-      form.on('inputPass inputPassing inputFail inputFailing inputValid inputInvalid formValid formInvalid', function(input, data) {
+      form.on('inputPassing  inputFailing inputValid inputInvalid formValid formInvalid', function(input, data) {
         console.log(input, data);
-      });
-
-      form.on('submit', function(e) {
-        e.preventDefault();
       });
 
     </script>
