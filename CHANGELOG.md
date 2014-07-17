@@ -1,4 +1,9 @@
 
+0.2.2 / 2014-07-17
+==================
+
+ * Cleaned up input handling. Now fires formValid/Invalid as expected when an input fails. Side effect being the code is cleaner.
+
 0.2.1 / 2014-07-15
 ==================
 
