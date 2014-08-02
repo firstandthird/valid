@@ -1,7 +1,7 @@
 
 /*!
  * valid - Javascript library to validate input fields in a form
- * v0.2.1
+ * v0.3.0
  * https://github.com/firstandthird/valid
  * copyright First + Third 2014
  * MIT License
@@ -134,6 +134,7 @@
       errorClass: 'valid-input-error',
       validClass: 'valid-input-valid',
       inputTypes: ['input', 'textarea', 'select'],
+      validateOnBlur: true,
       preventDefault: true
     },
     events: {
@@ -163,11 +164,12 @@
         new validations(validators);
       }
 
-      this.bindEvents();
+      if (this.validateOnBlur){
+        this.bindEvents();
+      }
     },
 
     bindEvents: function() {
-      var self = this;
       var inputs = this.find(this.inputTypes.join());
 
       inputs.unbind(this.supportedInputEvent + ' blur.valid');
@@ -175,7 +177,7 @@
     },
 
     check: function(e) {
-      if(this.preventDefault) {
+      if(this.preventDefault && e) {
         e.preventDefault();
       }
 
@@ -185,7 +187,8 @@
       this.find(this.inputTypes.join()).each(function() {
         var $this = $(this);
 
-        var isActiveEl = $this.is(e.target);
+        var isActiveEl = e && $this.is(e.target),
+          isSubmit = e && e.type === 'submit';
 
         $.each(this.attributes, function(i, attr) {
           var method = '';
@@ -201,7 +204,7 @@
               if(!response.valid) {
                 self.results.push(response);
 
-                if(e.type !== 'submit') {
+                if(!isSubmit) {
                   if(isActiveEl) {
                     self.emit('inputFailing', [response.element, response]);
                   } 
@@ -210,7 +213,7 @@
                   $this.addClass(self.errorClass).removeClass(self.validClass);
                 }
               } else {
-                if(e.type !== 'submit') {
+                if(!isSubmit) {
                   if(isActiveEl) {
                     self.emit('inputPassing', [response.element, response]);
                   }
@@ -226,8 +229,16 @@
 
       if(this.results.length) {
         this.emit('formInvalid', [this.el, this.results]);
+
+        if (!e){
+          return this.results;
+        }
       } else {
         this.emit('formValid', [this.el]);
+
+        if (!e){
+          return true;
+        }
       }
     },
 

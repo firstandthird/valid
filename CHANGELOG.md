@@ -1,4 +1,10 @@
 
+0.3.0 / 2014-08-02 
+==================
+
+  * fixed jshint
+  * support for calling check directly
+
 0.2.2 / 2014-07-17
 ==================
 
