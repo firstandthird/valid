@@ -1,16 +1,16 @@
 
 /*!
  * valid - Javascript library to validate input fields in a form
- * v0.3.0
+ * v0.3.1
  * https://github.com/firstandthird/valid
- * copyright First + Third 2014
+ * copyright First + Third 2015
  * MIT License
 */
 /*!
  * validations - Utility lib to do string validations
  * v0.0.4
  * https://github.com/firstandthird/validations
- * copyright First + Third 2014
+ * copyright First + Third 2015
  * MIT License
 */
 (function(){
@@ -48,6 +48,10 @@
     return count;
   };
 
+  var trimString = function(text) {
+    return text.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+  };
+
   var validations = function(customValidators) {
     var validator;
 
@@ -81,8 +85,37 @@
 
   validations.required = function(input) {
     return validations.validate(input, function(text) {
-      return text.length > 0;
+      var type = typeof text;
+
+      if(type === 'undefined' || text === null) {
+        return false;
+      }
+
+      if(text instanceof Array) {
+        return text.length > 0;
+      }
+
+      if(type === 'string') {
+        return trimString(text).length > 0;
+      }
+
+      if(type === 'object') {
+        
+        for(var i in text) {
+          if(text.hasOwnProperty(i)) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      return true;
     }, 'required');
+  };
+
+  validations.slug = function(input) {
+    return validations.validate(input, /^[a-z0-9-]+$/, 'slug');
   };
 
   validations.email = function(input) {
