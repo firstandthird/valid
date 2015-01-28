@@ -1,14 +1,14 @@
 {
   "name": "valid",
   "description": "Javascript library to validate input fields in a form",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "https://github.com/firstandthird/valid",
   "license": "MIT",
   "copyright": "First + Third",
   "main": "dist/valid.js",
   "dependencies": {
     "jquery": "*",
-    "validations": "~0.0.5",
+    "validations": "~0.0.6",
     "fidel": "~2.2.5"
   },
   "devDependencies": {

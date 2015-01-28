@@ -1,14 +1,14 @@
 
 /*!
  * valid - Javascript library to validate input fields in a form
- * v0.3.1
+ * v0.3.2
  * https://github.com/firstandthird/valid
  * copyright First + Third 2015
  * MIT License
 */
 /*!
  * validations - Utility lib to do string validations
- * v0.0.4
+ * v0.0.5
  * https://github.com/firstandthird/validations
  * copyright First + Third 2015
  * MIT License
@@ -146,6 +146,30 @@
     if(bits > secureThreshold) bits = secureThreshold;
 
     return ~~((bits / secureThreshold) * 100);
+  };
+
+  validations.maxLength = function(input, length) {
+    length = length || 0;
+
+    return validations.validate(input, function(text) {
+      var type = typeof text;
+
+      if(type === 'undefined' || text === null) {
+        return false;
+      }
+
+      if(text instanceof Array || type === 'string') {
+        return text.length <= length;
+      }
+
+      return false;
+    }, 'maxLength');
+  };
+
+  validations.url = function(input) {
+    return validations.validate(input, function(text) {
+      return (/^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/gi).test(text);
+    }, 'url');
   };
 
   if (typeof exports !== 'undefined') {
