@@ -1,7 +1,7 @@
 {
   "name": "valid",
   "description": "Javascript library to validate input fields in a form",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "homepage": "https://github.com/firstandthird/valid",
   "license": "MIT",
   "copyright": "First + Third",

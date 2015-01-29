@@ -1,7 +1,7 @@
 
 /*!
  * valid - Javascript library to validate input fields in a form
- * v0.3.3
+ * v0.3.4
  * https://github.com/firstandthird/valid
  * copyright First + Third 2015
  * MIT License
@@ -357,8 +357,8 @@
       return this.validate(input, 'passwordConfirm', confirm);
     },
 
-    maxLength: function(input, length) {
-      return this.validate(input, 'maxLength', length);
+    maxLength: function(input) {
+      return this.validate(input, 'maxLength', input.data('valid-max-length'));
     }
   });
 }(jQuery));
