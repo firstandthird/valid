@@ -256,9 +256,6 @@
 
             if(self[method]) {
               response = self[method].call(self, $this);
-
-              console.log('Response', response);
-
               response.element = $this[0];
 
               if(!response.valid) {
