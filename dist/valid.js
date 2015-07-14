@@ -339,6 +339,10 @@
     password: function(input, method) {
       return this.validate(input, 'password', method);
     },
+    
+    url: function(input){
+      return this.validate(input, 'url');
+    },
 
     passwordConfirm: function(input, confirm) {
       var target;

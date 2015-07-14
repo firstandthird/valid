@@ -37,6 +37,18 @@ if (errors) {
 
 ```
 
+##Built In Validations
+
+The valid library comes with 4 built in validations. They are `required`, `email`, `password`, and `password-confirm`. Use them as follows:
+
+```html
+  <input type="text" data-valid-required name="name"/>
+  <input type="password" data-valid-password name="password" id="passwordInput"/>
+  <input type="password" data-valid-password-confirm="passwordInput" name="confirm-password" />
+  <input type="text" data-valid-email name="email" />
+```
+
+
 
 ##Development
 
