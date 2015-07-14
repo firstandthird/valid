@@ -256,6 +256,9 @@
 
             if(self[method]) {
               response = self[method].call(self, $this);
+
+              console.log('Response', response);
+
               response.element = $this[0];
 
               if(!response.valid) {
@@ -338,6 +341,10 @@
 
     password: function(input, method) {
       return this.validate(input, 'password', method);
+    },
+    
+    url: function(input){
+      return this.validate(input, 'url');
     },
 
     passwordConfirm: function(input, confirm) {

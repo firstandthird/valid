@@ -25,8 +25,12 @@
       <label>Password: </label>
       <input type="password" data-valid-password value="" id="passwordInput" />
       <label>Confirm Password: </label>
-      <input type="password" data-valid-password-confirm=passwordInput" value=""/> 
+      <input type="password" data-valid-password-confirm="passwordInput" value=""/> 
+      <label>Url: </label>
+      <input type="text" name="url" data-valid-url value="" />
       <input type="submit" value="submit" />
+
+
     </form>
 
     <script src="../bower_components/jquery/dist/jquery.js"></script>
@@ -36,17 +40,10 @@
       var form = $('form');
 
       form.valid({
-        customValidators: {
-          url: function(input) {
-            return this.custom(input, function(text) {
-              return text.indexOf('htt') === 0;
-            }, 'url');
-          }
-        }
+        validateOnBlur: false
       });
 
       form.on('inputPassing  inputFailing inputValid inputInvalid formValid formInvalid', function(input, data) {
-        console.log(input, data);
       });
 
     </script>
